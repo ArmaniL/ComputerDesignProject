@@ -1,3 +1,11 @@
+let addr = {};
+{
+  const os = require("os");
+  const wifi = os.networkInterfaces()["Wi-Fi"][0];
+  const { address } = wifi;
+  addr = address;
+}
+console.log(addr);
 const express = require("express");
 const fileUpload = require("express-fileupload");
 const exec = require("child_process").exec;
@@ -36,25 +44,23 @@ app.post("/upload", (req, res) => {
     res.send("File uploaded! Your file code is:" + key);
   });
 });
-app.use(express.urlencoded(
-    {
-        extended:true
-    }
-))
-app.post("/download",(req,res)=>{
-    const {upload } =req.body
-    if (codeDirectory[upload]){
-      
-        res.download(codeDirectory[upload], function(error){
-            if(error){
-            console.log("Error : ", error)
-            }
-        });
-    }
-    else{
-        return res.status(400).send("Invalid Code");
-    }
-})
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+app.post("/download", (req, res) => {
+  const { upload } = req.body;
+  if (codeDirectory[upload]) {
+    res.download(codeDirectory[upload], function (error) {
+      if (error) {
+        console.log("Error : ", error);
+      }
+    });
+  } else {
+    return res.status(400).send("Invalid Code");
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
