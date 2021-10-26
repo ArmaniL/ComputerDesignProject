@@ -19,6 +19,8 @@ const random_words = [
   "Garden",
   "Gas",
   "Gate",
+  "Panther",
+  "Animal",
 ];
 const random_key = () => {
   const first = random_words[Math.ceil(Math.random() * 7)];
