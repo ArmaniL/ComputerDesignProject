@@ -1,11 +1,17 @@
 let addr = {};
 {
   const os = require("os");
-  const wifi = os.networkInterfaces()["Wi-Fi"][0];
+  const lookup = os.platform()=='linux'?'wlan0':"Wi-Fi";
+  const wifi = os.networkInterfaces()[lookup][0];
   const { address } = wifi;
   addr = address;
 }
+addr = "http://" + addr + ":3000"
 console.log(addr);
+
+const qrCode = require("qrcode");
+qrCode.toFile("QRcode.png",addr)
+
 const express = require("express");
 const fileUpload = require("express-fileupload");
 const exec = require("child_process").exec;
